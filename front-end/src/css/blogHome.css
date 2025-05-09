@@ -1,0 +1,135 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.navbar {
+    position: fixed;
+    width: 98vw;
+    display: flex;
+    justify-content: space-between;
+    padding: 12px;
+    background-color: grey;
+    color: white;
+    
+}
+
+.buttonHome {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    align-items: center;
+}
+
+.buttonHome button {
+    height: 35px;
+    width: 80px;
+    /* padding: 12px 22px; */
+    border: none;
+    border-radius: 17px;
+    background-color: rgb(245, 171, 33);
+    color: white;
+}
+
+.regbtn:hover {
+    height: 40px;
+    width: 95px;
+    background-color: black;
+}
+
+.lgnbtn:hover {
+    /* padding: 13px 24px; */
+    height: 40px;
+    width: 95px;
+    background-color: black;
+}
+
+.catagories {
+    margin-top: 58px;
+    /* margin-bottom: 80px; */
+    position: fixed;
+    display: flex;
+    width: 100vw;
+    justify-content: space-evenly;
+    max-height: 150px;
+    background-color: lightgray;
+    padding: 20px;
+    color: rgb(34, 34, 34);
+}
+
+.catagories button {
+    height: 35px;
+    width: 80px;
+    border: none;
+    padding: 5px;
+    border-radius: 17px;
+    background-color: grey;
+    color: white;
+}
+
+.catagories button:hover {
+    height: 40px;
+    width: 95px;
+    background-color: black;
+
+}
+
+.blogsContainer input {
+    height: 31px;
+    margin-top: 25px;
+    width: 25vw;
+    border-radius: 20px 0 0 20px;
+}
+
+.blogsContainer button {
+    padding: 8px;
+    width: 70px;
+    border-radius: 0px 20px 20px 0;
+    background-color: rgb(245, 171, 33);
+    color: white;
+}
+
+.blogsContainer {
+    padding-top: 120px;
+    /* position: relative; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.blogs {
+    display: grid;
+    grid-template-columns: auto auto;
+    width: 80vw;
+    height: 70vh;
+    height: 60vh;
+    overflow: scroll;
+}
+
+.blog {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 5px;
+    margin: 12px;
+    /* border: 2px solid black; */
+    box-shadow: 1px 0px 0px 3px rgb(28 28 28 / 52%);
+    padding: 7px;
+    border-radius: 12px;
+    background-color: rgb(245, 245, 245);
+   max-height: 200px;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #25292e;
+    color: white;
+    position: fixed;
+    width: 100vw;
+    bottom: 0;
+    margin-top: 70px;
+}

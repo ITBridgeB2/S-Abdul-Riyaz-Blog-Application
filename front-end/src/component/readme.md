@@ -1,0 +1,1 @@
+i will send you a react page components and below each component the related css is there if there is no css means that component taking the styles from other component css like css overiting on anoter component and after that i will give you server file and database file which i have made you have just read that file hold until i give command what to do 

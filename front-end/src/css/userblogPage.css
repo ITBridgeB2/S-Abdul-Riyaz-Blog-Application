@@ -1,0 +1,83 @@
+/* Basic CSS */
+.user-blogs-page {
+    padding: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.blog-card {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.blog-card:hover {
+    transform: translateY(-5px);
+}
+
+.blog-actions button {
+    margin: 10px 5px;
+    padding: 8px 16px;
+    border: none;
+    cursor: pointer;
+    background: #007BFF;
+    color: white;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+}
+
+.blog-actions button:hover {
+    background: #0056b3;
+}
+
+/* Edit form */
+.edit-form input,
+.edit-form textarea {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.edit-form button {
+    background: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.edit-form button:hover {
+    background: #218838;
+}
+
+.edit-form button.cancel {
+    background: #dc3545;
+}
+
+.edit-form button.cancel:hover {
+    background: #c82333;
+}
+
+/* Animation */
+.edit-form {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
