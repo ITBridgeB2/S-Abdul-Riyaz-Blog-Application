@@ -1,55 +1,106 @@
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(to right, #232526, #414345);
+  color: #fff;
+  margin: 0;
+  padding: 0;
+}
 
-.main{
-    height: 100vh;
-    width: 100vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
+.main {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 1s ease-in;
 }
 
 form {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    background-color: rgba(255, 255, 255, 0.8);
-    /* padding: 30px 40px; */
-    border-radius: 16px;
-    width: 40%;
-    height: 70vh;
-    max-width: 900px;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  background: #1e1e2f;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  width: 100%;
+  max-width: 400px;
+  animation: slideUp 0.8s ease-in-out;
 }
 
-form div{
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    align-items: center;
-}
-.reisterInput
- {
-    width: 50%;
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    font-size: 1rem;
-    margin-top: 4px;
+form h1 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #00d4ff;
 }
 
-.button{
-    margin: 7px;
-    padding: 12px 18px;
-    font-size: 1rem;
-    border: none;
-    border-radius: 25px;
-    background-color: #f0a720;
-    color: white;
-    cursor: pointer;
-    transition: background 0.3s ease;
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #ddd;
 }
 
-.button:hover{
-    background-color: rgb(48, 46, 46);
+.reisterInput {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 10px;
+  background-color: #2e2e3e;
+  color: #fff;
+  transition: 0.3s;
+  font-size: 14px;
 }
+
+.reisterInput:focus {
+  outline: 2px solid #00d4ff;
+  background-color: #3c3c4e;
+}
+
+.error {
+  color: #ff6b6b;
+  font-size: 12px;
+  margin-top: -10px;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.btns {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.button {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: #00d4ff;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.button:hover {
+  background: #0bb8e6;
+  transform: scale(1.03);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+
+ 

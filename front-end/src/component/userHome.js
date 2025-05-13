@@ -1,30 +1,32 @@
 import "../css/userHome.css";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 
 function UserHomePageComponent() {
     const navigate = useNavigate();
+    const fileInputRef = useRef(null);
+
     const [showPopup, setShowPopup] = useState(false);
     const [userEmail, setUserEmail] = useState("");
-    const [blogs, setblogs] = useState([]);
+    const [blogs, setBlogs] = useState([]);
+    const [message, setMessage] = useState("");
+
     const [formData, setFormData] = useState({
         title: "",
         content: "",
         catagorie: "",
         author: "",
-        email: ""  // Adding the email field
+        email: "",
+        image: null
     });
 
-    const [serchtitle, setserchtitle] = useState({
-        title: ""
-    });
+    const [searchTitle, setSearchTitle] = useState({ title: "" });
 
-    // Fetch all blogs
     const fetchAllBlogs = () => {
         fetch(`http://localhost:5000/blogs`)
             .then(res => res.json())
-            .then(data => setblogs(data))
+            .then(data => setBlogs(data))
             .catch(err => console.error("Error fetching blogs:", err));
     };
 
@@ -32,33 +34,30 @@ function UserHomePageComponent() {
         fetchAllBlogs();
     }, []);
 
-    // Filter blogs by category
     const filterByCategory = (category) => {
         fetch(`http://localhost:5000/blogs/catagorie/${category}`)
             .then(res => res.json())
-            .then(data => setblogs(data))
+            .then(data => setBlogs(data))
             .catch(err => console.error("Error fetching category blogs:", err));
     };
 
-    // Search by title
-    const serchtopic = () => {
-        const title = serchtitle.title.trim();
+    const searchTopic = () => {
+        const title = searchTitle.title.trim();
         if (title.length > 0) {
             fetch(`http://localhost:5000/blogs/${title}`)
                 .then(res => res.json())
-                .then(data => setblogs(data))
+                .then(data => setBlogs(data))
                 .catch(err => console.error("Error fetching title blogs:", err));
         } else {
             fetchAllBlogs();
         }
     };
 
-    const handleserch = (e) => {
+    const handleSearch = (e) => {
         const { name, value } = e.target;
-        setserchtitle({ [name]: value });
+        setSearchTitle({ [name]: value });
     };
 
-    // Set user email from localStorage
     useEffect(() => {
         const email = localStorage.getItem("email");
         if (!email) {
@@ -66,30 +65,58 @@ function UserHomePageComponent() {
             return;
         }
         setUserEmail(email);
-        setFormData((prevData) => ({ ...prevData, email }));  // Set email in form data
+        setFormData((prevData) => ({ ...prevData, email }));
     }, [navigate]);
 
     const resetForm = () => {
         setFormData({
-            title: "", content: "", catagorie: "", author: "", email: ""  // Reset email as well
+            title: "",
+            content: "",
+            catagorie: "",
+            author: "",
+            email: userEmail,
+            image: null
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        axios.post("http://localhost:5000/blog", formData)
-            .then((res) => {
-                setblogs((prev) => [...prev, { ...formData, id: res.data.id }]);
-                alert("Blog Uploaded successfully");
-                togglePopup();
-                resetForm();
-            })
-            .catch((err) => console.error("Add error:", err));
+
+        const formDataToSend = new FormData();
+        formDataToSend.append('title', formData.title);
+        formDataToSend.append('content', formData.content);
+        formDataToSend.append('catagorie', formData.catagorie);
+        formDataToSend.append('author', formData.author);
+        formDataToSend.append('email', formData.email);
+        formDataToSend.append('image', formData.image);  // Attach the image
+
+        // Log the formData to see if all fields are being set
+        for (let [key, value] of formDataToSend.entries()) {
+            console.log(key, value);
+        }
+
+        try {
+            const response = await axios.post('http://localhost:5000/blog', formDataToSend, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            setMessage(response.data.message);
+            alert("Blog uploaded Successfully")
+            resetForm(); // Reset the form after submission
+            setShowPopup(false); // Close the popup
+        } catch (error) {
+            console.error('Add error:', error);
+            setMessage(error.response?.data?.error || 'Something went wrong.');
+        }
     };
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
+        const { name, value, files } = e.target;
+        setFormData((prev) => ({
+            ...prev,
+            [name]: files ? files[0] : value,
+        }));
     };
 
     const togglePopup = () => {
@@ -120,7 +147,7 @@ function UserHomePageComponent() {
             </header>
 
             <main>
-                <div className="catagories">
+                <div className="categories">
                     <h3>Categories :</h3>
                     {["Sports", "Fitness", "Programing", "Nature", "Travelling", "Study", "Politics"].map((cat) => (
                         <button key={cat} onClick={() => filterByCategory(cat)}>{cat}</button>
@@ -130,25 +157,47 @@ function UserHomePageComponent() {
 
                 <div className="blogsContainer">
                     <div className="serchBar">
-                        <input type="text" name="title" onChange={handleserch} placeholder="Search your topic by entering title" />
-                        <button onClick={serchtopic}>Search</button>
+                        <input type="text" name="title" onChange={handleSearch} placeholder="Search your topic by entering title" />
+                        <button onClick={searchTopic}>Search</button>
                     </div>
+
+                    {message && <p>{message}</p>}
 
                     {showPopup && (
                         <div className="popup">
                             <div className="popup-content">
                                 <h2>Add Blog</h2>
-                                <form onSubmit={handleSubmit}>
+                                <form onSubmit={handleSubmit} encType="multipart/form-data">
                                     <label>Title:</label>
                                     <input type="text" name="title" value={formData.title} onChange={handleChange} required />
+
                                     <label>Content:</label>
                                     <textarea name="content" value={formData.content} onChange={handleChange} required />
+
                                     <label>Category:</label>
                                     <input type="text" name="catagorie" value={formData.catagorie} onChange={handleChange} required />
+
                                     <label>Author:</label>
                                     <input type="text" name="author" value={formData.author} onChange={handleChange} required />
+
                                     {/* Hidden email field */}
                                     <input type="hidden" name="email" value={formData.email} />
+
+                                    {/* Hidden file input */}
+                                    <input
+                                        type="file"
+                                        name="image"
+                                        accept="image/*"
+                                        ref={fileInputRef}
+                                        onChange={handleChange}
+                                        style={{ display: "none" }}
+                                    />
+
+                                    {/* Button to trigger file input */}
+                                    <button type="button" onClick={() => fileInputRef.current.click()}>
+                                        Upload Image
+                                    </button>
+
                                     <div className="popup-buttons">
                                         <button type="submit" className="button">Submit</button>
                                         <button type="button" className="button cancel" onClick={togglePopup}>Close</button>
@@ -162,6 +211,16 @@ function UserHomePageComponent() {
                         {blogs.length > 0 ? blogs.map((blog, index) => (
                             <div className="blog" key={index}>
                                 <h3>{blog.title}</h3>
+
+                                {/* ✅ Show image if it exists */}
+                                {blog.image && (
+                                    <img
+                                        src={`http://localhost:5000/uploads/${blog.image}`}
+                                        alt={blog.title}
+                                        style={{ width: "100%", maxHeight: "300px", objectFit: "cover", borderRadius: "8px", marginBottom: "10px" }}
+                                    />
+                                )}
+
                                 <p>{blog.content}</p>
                                 <h5>Author: {blog.author}</h5>
                             </div>
@@ -169,6 +228,7 @@ function UserHomePageComponent() {
                             <p>No blogs found.</p>
                         )}
                     </div>
+
                 </div>
             </main>
 

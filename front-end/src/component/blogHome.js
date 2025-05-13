@@ -1,4 +1,5 @@
 import "../css/blogHome.css";
+import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
@@ -81,8 +82,18 @@ function BlogHomePageComponent() {
 
                     <div className="blogs">
                         {blogs.length > 0 ? blogs.map((blog, index) => (
-                            <div className="blog" key={index}>
+                                                        <div className="blog" key={index}>
                                 <h3>{blog.title}</h3>
+
+                                {/* ✅ Show image if it exists */}
+                                {blog.image && (
+                                    <img
+                                        src={`http://localhost:5000/uploads/${blog.image}`}
+                                        alt={blog.title}
+                                        style={{ width: "100%", maxHeight: "300px", objectFit: "cover", borderRadius: "8px", marginBottom: "10px" }}
+                                    />
+                                )}
+
                                 <p>{blog.content}</p>
                                 <h5>Author: {blog.author}</h5>
                             </div>
